@@ -1,6 +1,6 @@
 {
   "name": "ionic-gallery-modal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Ionic 2 Gallery Modal (to preview photos)",
   "main": "dist/index.js",
   "types":  "dist/index.d.ts",
@@ -35,5 +35,13 @@
     "ionic-angular": "2.0.0-rc.4",
     "rxjs": "^5.0.0-beta.12",
     "zone.js": "0.6.26"
-  }
+  },
+  "scripts": {
+    "build": "npm run build:js",
+    "build:js": "tsc -p tsconfig.json",
+    "prepublish": "npm run build"
+  },
+  "files": [
+    "dist"
+  ]
 }
