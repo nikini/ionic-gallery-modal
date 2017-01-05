@@ -1,3 +1,4 @@
 node_modules
 dist
 *.d.ts
+npm-debug.log

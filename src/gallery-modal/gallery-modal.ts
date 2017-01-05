@@ -5,7 +5,7 @@ import { Photo } from '../interfaces/photo-interface';
 @Component({
   selector: 'gallery-modal',
   templateUrl: 'gallery-modal.html',
-  styleUrls: ['./gallery-modal.scss'],
+  styleUrls: ['./gallery-modal.css'],
 })
 export class GalleryModal {
   @ViewChild('slider') slider: Slides;

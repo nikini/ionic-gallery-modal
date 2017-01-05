@@ -4,7 +4,7 @@ import { ViewController, Gesture, Scroll } from 'ionic-angular';
 @Component({
   selector: 'zoomable-image',
   templateUrl: 'zoomable-image.html',
-  styleUrls: ['./zoomable-image.scss'],
+  styleUrls: ['./zoomable-image.css'],
 })
 export class ZoomableImage implements OnInit, OnDestroy {
   @ViewChild('image') image;
