@@ -1,0 +1,17 @@
+<ion-content #content class="gallery-modal">
+  <button class="close-button" ion-button icon-only (click)="dismiss()">
+    <ion-icon name="{{ closeIcon }}"></ion-icon>
+  </button>
+
+  <!-- Initial image while modal is animating -->
+  <div class="image-on-top" #image [ngStyle]="{ 'background-image': 'url(' + photos[initialSlide].url + ')'}" [hidden]="sliderLoaded">
+    &nbsp;
+  </div>
+
+  <!-- Slider with images -->
+  <ion-slides #slider [options]="slideOptions" class="slider" *ngIf="photos.length" [ngStyle]="{ 'visibility': sliderLoaded ? 'visible' : 'hidden' }">
+    <ion-slide *ngFor="let photo of photos;">
+      <zoomable-image src="{{ photo.url }}" (disableScroll)="disableScroll($event)" (enableScroll)="enableScroll($event)"></zoomable-image>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
