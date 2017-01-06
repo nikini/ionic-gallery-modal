@@ -1,15 +1,18 @@
 {
   "name": "ionic-gallery-modal",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Ionic 2 Gallery Modal (to preview photos)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run build:js && npm run build:css && npm run copy:html",
+    "build": "npm run clean:build && npm run copy:build && npm run build:css && npm run template:inline && npm run build:js && npm run clean:build && npm run clean:rename",
+    "copy:build": "cp -R src dist",
+    "clean:build": "rm -rf dist",
+    "clean:rename": "mv dist-final dist",
+    "template:inline": "gulp inline-templates",
     "build:js": "tsc -p tsconfig.json",
-    "build:css": "node-sass src -o dist",
-    "prepublish": "npm run build",
-    "copy:html": "copyfiles -u 1 src/**/*.html dist/"
+    "build:css": "node-sass dist -o dist && sh merge-css.sh",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "ionic 2",
@@ -20,11 +23,17 @@
   "author": "Ciprian Mocanu",
   "license": "MIT",
   "devDependencies": {
+    "@angular/compiler": "^2.2.1",
+    "@types/node": "^6.0.57",
     "copyfiles": "^1.0.0",
+    "gulp": "^3.9.1",
+    "gulp-inline-ng2-template": "^4.0.0",
     "node-sass": "^4.1.1",
     "nodemon": "^1.11.0",
+    "rxjs": "^5.0.2",
     "ts-loader": "^1.3.3",
-    "typescript": "2.0.3"
+    "typescript": "^2.2.0-dev.20170105",
+    "typings": "^2.1.0"
   },
   "dependencies": {
     "@angular/core": "2.2.1",

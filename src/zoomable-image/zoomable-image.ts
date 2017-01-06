@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { ViewController, Gesture, Scroll } from 'ionic-angular';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'zoomable-image',
   templateUrl: 'zoomable-image.html',
-  styleUrls: ['./zoomable-image.css'],
 })
 export class ZoomableImage implements OnInit, OnDestroy {
   @ViewChild('image') image;
@@ -16,7 +16,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   @Output() disableScroll = new EventEmitter();
   @Output() enableScroll = new EventEmitter();
 
-  private scrollableElement: HTMLElement;
+  private scrollableElement: any;
   private scrollListener: any;
 
   private gesture: Gesture;
@@ -87,15 +87,18 @@ export class ZoomableImage implements OnInit, OnDestroy {
     let _this = this;
     let image = new Image();
     image.onload = function () {
-      if (this.width / this.height > window.innerWidth / window.innerHeight) {
+      const width = this['width'];
+      const height = this['height'];
+
+      if (width / height > window.innerWidth / window.innerHeight) {
         _this.imageWidth = window.innerWidth;
-        _this.imageHeight = this.height / this.width * window.innerWidth;
+        _this.imageHeight = height / width * window.innerWidth;
       } else {
         _this.imageHeight = window.innerHeight;
-        _this.imageWidth = this.width / this.height * window.innerHeight;
+        _this.imageWidth = width / height * window.innerHeight;
       }
 
-      _this.maxScale = Math.max(this.width / _this.imageWidth - _this.maxScaleBounce, 1.5);
+      _this.maxScale = Math.max(width / _this.imageWidth - _this.maxScaleBounce, 1.5);
       _this.image.nativeElement.style.width = `${_this.imageWidth}px`;
       _this.image.nativeElement.style.height = `${_this.imageHeight}px`;
 

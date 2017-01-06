@@ -7,10 +7,15 @@
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "dist-final",
+    "types" : ["node"],
     "declaration": true
   },
+  "include": [
+    "dist/**/*"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/*"
   ]
 }

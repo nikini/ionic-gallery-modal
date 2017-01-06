@@ -1,4 +1,6 @@
 node_modules
 dist
+dist-final
+typings
 *.d.ts
 npm-debug.log

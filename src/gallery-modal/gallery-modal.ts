@@ -1,11 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ViewController, NavParams, Slides, Content } from 'ionic-angular';
 import { Photo } from '../interfaces/photo-interface';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'gallery-modal',
   templateUrl: 'gallery-modal.html',
-  styleUrls: ['./gallery-modal.css'],
 })
 export class GalleryModal {
   @ViewChild('slider') slider: Slides;
