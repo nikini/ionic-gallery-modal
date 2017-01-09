@@ -4,3 +4,4 @@ dist-final
 typings
 *.d.ts
 npm-debug.log
+todo.md

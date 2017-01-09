@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
 import { ViewController, Gesture, Scroll } from 'ionic-angular';
+import { Subject }    from 'rxjs/Subject';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -12,6 +13,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   @ViewChild('ionScrollContainer') ionScrollContainer: Scroll;
 
   @Input() src: string;
+  @Input() parentSubject:Subject<any>;
 
   @Output() disableScroll = new EventEmitter();
   @Output() enableScroll = new EventEmitter();
@@ -47,16 +49,30 @@ export class ZoomableImage implements OnInit, OnDestroy {
     x: 0,
     y: 0,
   };
+  private dimensions: any = {
+    width: 0,
+    height: 0,
+  };
+
+  private imageElement: any;
+
+  constructor(private elementRef: ElementRef) {
+  }
 
   public ngOnInit() {
-    // Get the image dimensions
-    this.getImageDimensions();
-
     // Get the scrollable element
     this.scrollableElement = this.ionScrollContainer['_elementRef'].nativeElement.querySelector('.scroll-content');
 
     // Attach events
     this.attachEvents();
+
+    // Listen to parent resize
+    this.parentSubject.subscribe(event => {
+      this.resize(event);
+    });
+
+    // Resize the zoomable image
+    this.resize(false);
   }
 
   public ngOnDestroy() {
@@ -78,33 +94,69 @@ export class ZoomableImage implements OnInit, OnDestroy {
     // Scroll event
     this.scrollListener = this.scrollEvent.bind(this);
     this.scrollableElement.addEventListener('scroll', this.scrollListener);
-}
+  }
+
+  /**
+   * Called every time the window gets resized
+   */
+  public resize(event) {
+    let node = this.elementRef.nativeElement;
+
+    if (node.parentElement) {
+      node = node.parentElement;
+    }
+    // Set the wrapper dimensions first
+    this.setWrapperDimensions(node.offsetWidth, node.offsetHeight);
+
+    // Get the image dimensions
+    this.setImageDimensions();
+  }
+
+  /**
+   * Set the wrapper dimensions
+   *
+   * @param  {number} width
+   * @param  {number} height
+   */
+  private setWrapperDimensions(width:number = 0, height:number = 0) {
+    this.dimensions.width = width || window.innerWidth;
+    this.dimensions.height = height || window.innerHeight;
+  }
 
   /**
    * Get the real image dimensions and other useful stuff
    */
-  private getImageDimensions() {
-    let _this = this;
-    let image = new Image();
-    image.onload = function () {
-      const width = this['width'];
-      const height = this['height'];
+  private setImageDimensions() {
+    if (!this.imageElement) {
+      this.imageElement = new Image();
+      this.imageElement.src = this.src;
+      this.imageElement.onload = this.saveImageDimensions.bind(this);
+      return;
+    }
 
-      if (width / height > window.innerWidth / window.innerHeight) {
-        _this.imageWidth = window.innerWidth;
-        _this.imageHeight = height / width * window.innerWidth;
-      } else {
-        _this.imageHeight = window.innerHeight;
-        _this.imageWidth = width / height * window.innerHeight;
-      }
+    this.saveImageDimensions();
+  }
 
-      _this.maxScale = Math.max(width / _this.imageWidth - _this.maxScaleBounce, 1.5);
-      _this.image.nativeElement.style.width = `${_this.imageWidth}px`;
-      _this.image.nativeElement.style.height = `${_this.imageHeight}px`;
+  /**
+   * Save the image dimensions (when it has the image)
+   */
+  private saveImageDimensions() {
+    const width = this.imageElement['width'];
+    const height = this.imageElement['height'];
 
-      _this.displayScale();
-    };
-    image.src = this.src;
+    if (width / height > this.dimensions.width / this.dimensions.height) {
+      this.imageWidth = this.dimensions.width;
+      this.imageHeight = height / width * this.dimensions.width;
+    } else {
+      this.imageHeight = this.dimensions.height;
+      this.imageWidth = width / height * this.dimensions.height;
+    }
+
+    this.maxScale = Math.max(width / this.imageWidth - this.maxScaleBounce, 1.5);
+    this.image.nativeElement.style.width = `${this.imageWidth}px`;
+    this.image.nativeElement.style.height = `${this.imageHeight}px`;
+
+    this.displayScale();
   }
 
   /**
@@ -166,7 +218,6 @@ export class ZoomableImage implements OnInit, OnDestroy {
     }
 
     this.animateScale(scale);
-    this.checkScroll();
   }
 
   /**
@@ -211,8 +262,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
     const realImageWidth = this.imageWidth * this.scale;
     const realImageHeight = this.imageHeight * this.scale;
 
-    this.position.x = Math.max((window.innerWidth - realImageWidth) / (2 * this.scale), 0);
-    this.position.y = Math.max((window.innerHeight - realImageHeight) / (2 * this.scale), 0);
+    this.position.x = Math.max((this.dimensions.width - realImageWidth) / (2 * this.scale), 0);
+    this.position.y = Math.max((this.dimensions.height - realImageHeight) / (2 * this.scale), 0);
 
     this.image.nativeElement.style.transform = `scale(${this.scale}) translate(${this.position.x}px, ${this.position.y}px)`;
     this.container.nativeElement.style.width = `${realImageWidth}px`;
@@ -250,6 +301,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
     if (Math.abs(this.scale - scale) > 0.1) {
       window.requestAnimationFrame(this.animateScale.bind(this, scale));
+    } else {
+      this.checkScroll();
     }
   }
 }

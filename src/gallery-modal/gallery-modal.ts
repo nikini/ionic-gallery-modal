@@ -1,6 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ViewController, NavParams, Slides, Content } from 'ionic-angular';
 import { Photo } from '../interfaces/photo-interface';
+import { Subject }    from 'rxjs/Subject';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -19,6 +20,7 @@ export class GalleryModal {
   private sliderLoaded: boolean = false;
   private slideOptions: any = {};
   private closeIcon: string = 'arrow-back';
+  private parentSubject: Subject<any> = new Subject();
 
   constructor(private viewCtrl: ViewController, params: NavParams) {
     this.photos = params.get('photos') || [];
@@ -34,10 +36,15 @@ export class GalleryModal {
     this.viewCtrl.dismiss();
   }
 
+  private resize(event) {
+    this.parentSubject.next(event);
+  }
+
   /**
    * When the modal has entered into view
    */
   private ionViewDidEnter() {
+    this.resize(false);
     this.sliderLoaded = true;
   }
 
