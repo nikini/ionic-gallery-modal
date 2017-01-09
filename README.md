@@ -8,6 +8,11 @@ It consists of a modal that will help you make gallery preview modal.
 
 ![demo-ionic-2-gallery-modal](http://i.imgur.com/7iqiC1n.gif)
 
+## Example
+
+* [View live example](http://cip.chat/ionic-gallery-modal-demo/)
+* [Fork example repository](https://github.com/nikini/ionic-gallery-modal-demo)
+
 ## Installation
 
 Install it using npm
