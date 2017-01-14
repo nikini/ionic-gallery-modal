@@ -75,6 +75,12 @@ The possible options for it are:
 ## Problems or suggestions
 Let us know or submit a PR! And, please, don't hesitate to contribute. :heart:
 
+## Changelog
+
+#### v0.0.7
+ * Changed to work with Ionic 2 RC-5
+ * Made a temporary fix for orientationchange bug in ios
+ * Fixed a problem that was causing apps to not build
 
 ## Credits
 Ciprian Mocanu - [@nikini](http://github.com/nikini)

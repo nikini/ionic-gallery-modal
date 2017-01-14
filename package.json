@@ -1,6 +1,6 @@
 {
   "name": "ionic-gallery-modal",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Ionic 2 Gallery Modal (to preview photos)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,6 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@angular/compiler": "^2.2.1",
+    "@types/core-js": "^0.9.35",
     "@types/node": "^6.0.57",
     "copyfiles": "^1.0.0",
     "gulp": "^3.9.1",
@@ -53,7 +54,7 @@
     "dist"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/nikini/ionic-gallery-modal.git"
+    "type": "git",
+    "url": "https://github.com/nikini/ionic-gallery-modal.git"
   }
 }

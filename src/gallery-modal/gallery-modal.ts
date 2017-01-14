@@ -1,5 +1,5 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ViewController, NavParams, Slides, Content } from 'ionic-angular';
+import { Component, ViewChild, ViewEncapsulation, ElementRef } from '@angular/core';
+import { ViewController, NavParams, Slides, Content, Platform } from 'ionic-angular';
 import { Photo } from '../interfaces/photo-interface';
 import { Subject }    from 'rxjs/Subject';
 
@@ -22,7 +22,7 @@ export class GalleryModal {
   private closeIcon: string = 'arrow-back';
   private parentSubject: Subject<any> = new Subject();
 
-  constructor(private viewCtrl: ViewController, params: NavParams) {
+  constructor(private viewCtrl: ViewController, params: NavParams, private element: ElementRef, private platform: Platform) {
     this.photos = params.get('photos') || [];
     this.closeIcon = params.get('closeIcon') || 'arrow-back';
     this.initialSlide = params.get('initialSlide') || 0;
@@ -37,7 +37,22 @@ export class GalleryModal {
   }
 
   private resize(event) {
-    this.parentSubject.next(event);
+    this.slider.update();
+
+    let width = this.element['nativeElement'].offsetWidth;
+    let height = this.element['nativeElement'].offsetHeight;
+
+    this.parentSubject.next({
+      width: width,
+      height: height,
+    });
+  }
+
+  private orientationChange(event) {
+    // TODO: See if you can remove timeout
+    window.setTimeout(() => {
+      this.resize(event);
+    }, 150);
   }
 
   /**

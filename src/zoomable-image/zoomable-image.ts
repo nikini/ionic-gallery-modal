@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { ViewController, Gesture, Scroll } from 'ionic-angular';
 import { Subject }    from 'rxjs/Subject';
 
@@ -56,7 +56,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
   private imageElement: any;
 
-  constructor(private elementRef: ElementRef) {
+  constructor() {
   }
 
   public ngOnInit() {
@@ -100,13 +100,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * Called every time the window gets resized
    */
   public resize(event) {
-    let node = this.elementRef.nativeElement;
-
-    if (node.parentElement) {
-      node = node.parentElement;
-    }
     // Set the wrapper dimensions first
-    this.setWrapperDimensions(node.offsetWidth, node.offsetHeight);
+    this.setWrapperDimensions(event.width, event.height);
 
     // Get the image dimensions
     this.setImageDimensions();
@@ -118,7 +113,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * @param  {number} width
    * @param  {number} height
    */
-  private setWrapperDimensions(width:number = 0, height:number = 0) {
+  private setWrapperDimensions(width:number, height:number) {
     this.dimensions.width = width || window.innerWidth;
     this.dimensions.height = height || window.innerHeight;
   }
@@ -290,7 +285,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
    *
    * @param  {number} scale
    */
-  private animateScale(scale:number = 1) {
+  private animateScale(scale:number) {
     this.scale += (scale - this.scale) / 5;
 
     if (Math.abs(this.scale - scale) <= 0.1) {

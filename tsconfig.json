@@ -2,13 +2,18 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
     "outDir": "dist-final",
-    "types" : ["node"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "core-js"
+    ],
     "declaration": true
   },
   "include": [

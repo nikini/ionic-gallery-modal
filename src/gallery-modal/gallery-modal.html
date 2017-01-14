@@ -1,4 +1,4 @@
-<ion-content #content class="gallery-modal">
+<ion-content #content class="gallery-modal" (window:resize)="resize($event)" (window:orientationchange)="orientationChange($event)">
   <button class="close-button" ion-button icon-only (click)="dismiss()">
     <ion-icon name="{{ closeIcon }}"></ion-icon>
   </button>
