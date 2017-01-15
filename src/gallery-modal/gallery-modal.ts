@@ -14,11 +14,9 @@ export class GalleryModal {
 
   public photos: Photo[];
   private sliderDisabled: boolean = false;
-  private swiper: any;
   private initialSlide: number = 0;
   private currentSlide: number = 0;
   private sliderLoaded: boolean = false;
-  private slideOptions: any = {};
   private closeIcon: string = 'arrow-back';
   private parentSubject: Subject<any> = new Subject();
 
@@ -26,7 +24,6 @@ export class GalleryModal {
     this.photos = params.get('photos') || [];
     this.closeIcon = params.get('closeIcon') || 'arrow-back';
     this.initialSlide = params.get('initialSlide') || 0;
-    this.slideOptions.initialSlide = this.initialSlide;
   }
 
   /**
@@ -70,9 +67,7 @@ export class GalleryModal {
    */
   private disableScroll(event) {
     if (!this.sliderDisabled) {
-      this.swiper = this.slider.getSlider();
-      this.currentSlide = this.swiper.activeIndex;
-      this.swiper.destroy(false);
+      this.currentSlide = this.slider.getActiveIndex();
       this.sliderDisabled = true;
     }
   }
@@ -84,9 +79,7 @@ export class GalleryModal {
    */
   private enableScroll(event) {
     if (this.sliderDisabled) {
-      this.swiper = this.slider.getSlider();
-      this.swiper.init();
-      this.swiper.slideTo(this.currentSlide, 0, false);
+      this.slider.slideTo(this.currentSlide, 0, false);
       this.sliderDisabled = false;
     }
   }
