@@ -53,6 +53,9 @@ export class ZoomableImage implements OnInit, OnDestroy {
     width: 0,
     height: 0,
   };
+  private panCenterStart = {
+    x: 0, y: 0,
+  };
 
   private imageElement: any;
 
@@ -90,6 +93,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.gesture.on('pinch', e => this.pinchEvent(e));
     this.gesture.on('pinchstart', e => this.pinchStartEvent(e));
     this.gesture.on('pinchend', e => this.pinchEndEvent(e));
+    this.gesture.on('pan', e => this.panEvent(e));
 
     // Scroll event
     this.scrollListener = this.scrollEvent.bind(this);
@@ -215,6 +219,22 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.animateScale(scale);
   }
 
+  private panEvent(event) {
+    // calculate center x,y since pan started
+    const x = Math.max(Math.floor(this.panCenterStart.x + event.deltaX), 0);
+    const y = Math.max(Math.floor(this.panCenterStart.y + event.deltaY), 0);
+
+    this.centerStart.x = x;
+    this.centerStart.y = y;
+
+    if (event.isFinal) {
+      this.panCenterStart.x = x;
+      this.panCenterStart.y = y;
+    }
+
+    this.displayScale();
+  }
+
   /**
    * When the user is scrolling
    *
@@ -236,6 +256,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
     this.centerStart.x = Math.max(event.center.x - this.position.x * this.scale, 0);
     this.centerStart.y = Math.max(event.center.y - this.position.y * this.scale, 0);
+    this.panCenterStart.x = Math.max(event.center.x - this.position.x * this.scale, 0);
+    this.panCenterStart.y = Math.max(event.center.y - this.position.y * this.scale, 0);
 
     this.centerRatio.x = Math.min((this.centerStart.x + this.scroll.x) / realImageWidth, 1);
     this.centerRatio.y = Math.min((this.centerStart.y + this.scroll.y) / realImageHeight, 1);
