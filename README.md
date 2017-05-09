@@ -54,6 +54,7 @@ To open the module just use the [Ionic 2 ModalController](https://ionicframework
 
 ```
 import { ModalController } from 'ionic-angular';
+import { GalleryModal } from 'ionic-gallery-modal';
 ```
 
 ```
