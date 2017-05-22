@@ -53,6 +53,11 @@ entryComponents: [
 To open the module just use the [Ionic 2 ModalController](https://ionicframework.com/docs/v2/api/components/modal/ModalController/)
 
 ```
+import { ModalController } from 'ionic-angular';
+import { GalleryModal } from 'ionic-gallery-modal';
+```
+
+```
 let modal = this.modalCtrl.create(GalleryModal, {
   photos: photos,
   initialSlide: index
