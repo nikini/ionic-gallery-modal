@@ -85,6 +85,11 @@ Let us know or submit a PR! And, please, don't hesitate to contribute. :heart:
 
 ## Changelog
 
+#### v0.1.0
+ * Changed to work with Ionic 3.2
+ * Fixed an issue that was causing an error when building ionic app with `--prod` flag on
+ * Changed the whole building system for the plugin
+
 #### v0.0.7
  * Changed to work with Ionic 2 RC-5
  * Made a temporary fix for orientationchange bug in ios
