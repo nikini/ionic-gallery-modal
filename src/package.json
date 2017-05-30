@@ -1,0 +1,30 @@
+{
+  "name": "ionic-gallery-modal",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikini/ionic-gallery-modal"
+  },
+  "author": {
+    "name": "Ciprian Mocanu",
+    "email": "ciprian@mbe.ro"
+  },
+  "keywords": [
+    "ionic 2",
+    "ionic 3",
+    "gallery",
+    "gallery modal"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nikini/ionic-gallery-modal/issues"
+  },
+  "module": "ionic-gallery-modal.js",
+  "typings": "ionic-gallery-modal.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^4.1.2",
+    "ionic-angular": "3.3.0",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.10"
+  }
+}

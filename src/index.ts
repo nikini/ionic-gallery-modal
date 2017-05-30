@@ -1,2 +1,2 @@
-export * from './gallery-modal/gallery-modal';
-export * from './zoomable-image/zoomable-image';
+export { ZoomableImage } from './zoomable-image/zoomable-image';
+export { GalleryModal } from './gallery-modal/gallery-modal';

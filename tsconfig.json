@@ -1,26 +1,14 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
+    "baseUrl": "./src",
     "experimentalDecorators": true,
-    "target": "es5",
-    "module": "commonjs",
     "moduleResolution": "node",
-    "removeComments": true,
-    "sourceMap": true,
-    "outDir": "dist-final",
-    "typeRoots": [
-      "node_modules/@types"
+    "rootDir": "./src",
+    "lib": [
+      "es2015",
+      "dom"
     ],
-    "types": [
-      "core-js"
-    ],
-    "declaration": true
-  },
-  "include": [
-    "dist/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/**/*"
-  ]
+    "skipLibCheck": true,
+    "types": []
+  }
 }
