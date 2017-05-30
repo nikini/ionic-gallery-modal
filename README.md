@@ -1,15 +1,18 @@
 [![npm](https://img.shields.io/npm/l/express.svg)](https://www.npmjs.com/package/ionic-gallery-modal)
+[![NPM Version](http://img.shields.io/npm/v/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
+[![NPM Downloads](https://img.shields.io/npm/dm/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
 
 ### Small update
 At the moment, I'm working on an update on this package. I want to fix a few more issues with it, so it's going to take a bit more than expected.. Stay tuned :)
 
-# Ionic 2 Gallery Modal
+# Ionic Gallery Modal
 
 It consists of a modal that will help you make gallery preview modal.
+Last tested with Ionic 3.3.0
 
 ## Demo
 
-![demo-ionic-2-gallery-modal](http://i.imgur.com/7iqiC1n.gif)
+![demo-ionic-3-gallery-modal](http://i.imgur.com/7iqiC1n.gif)
 
 ## Example
 
@@ -53,7 +56,7 @@ entryComponents: [
 
 ## Usage
 
-To open the module just use the [Ionic 2 ModalController](https://ionicframework.com/docs/v2/api/components/modal/ModalController/)
+To open the module just use the [Ionic ModalController](https://ionicframework.com/docs/v2/api/components/modal/ModalController/)
 
 ```
 import { ModalController } from 'ionic-angular';
