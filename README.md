@@ -2,9 +2,6 @@
 [![NPM Version](http://img.shields.io/npm/v/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
 [![NPM Downloads](https://img.shields.io/npm/dm/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
 
-### Small update
-At the moment, I'm working on an update on this package. I want to fix a few more issues with it, so it's going to take a bit more than expected.. Stay tuned :)
-
 # Ionic Gallery Modal
 
 It consists of a modal that will help you make gallery preview modal.
