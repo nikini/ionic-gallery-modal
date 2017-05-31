@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
 import { ViewController, Gesture, Scroll } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 
@@ -11,7 +11,7 @@ import { Subject } from 'rxjs/Subject';
 export class ZoomableImage implements OnInit, OnDestroy {
   @ViewChild('image') image;
   @ViewChild('container') container;
-  @ViewChild('ionScrollContainer') ionScrollContainer: Scroll;
+  @ViewChild('ionScrollContainer', { read: ElementRef }) ionScrollContainer: ElementRef;
 
   @Input() src: string;
   @Input() parentSubject:Subject<any>;
@@ -65,7 +65,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
   public ngOnInit() {
     // Get the scrollable element
-    this.scrollableElement = this.ionScrollContainer['_scrollContent'].nativeElement;
+    this.scrollableElement = this.ionScrollContainer.nativeElement.querySelector('.scroll-content');
 
     // Attach events
     this.attachEvents();

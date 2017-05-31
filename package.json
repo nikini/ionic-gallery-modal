@@ -1,9 +1,9 @@
 {
   "name": "ionic-gallery-modal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ionic 2/3 Gallery Modal (to preview photos)",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/index.qd.ts",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
