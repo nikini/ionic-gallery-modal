@@ -218,6 +218,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * @param  {Hammer.Event} event
    */
   private panEvent(event) {
+    console.log('panning');
+
     // calculate center x,y since pan started
     const x = Math.max(Math.floor(this.panCenterStart.x + event.deltaX), 0);
     const y = Math.max(Math.floor(this.panCenterStart.y + event.deltaY), 0);

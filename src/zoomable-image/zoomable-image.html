@@ -1,11 +1,12 @@
 <ion-scroll #ionScrollContainer scrollX="true" scrollY="true" zoom="false">
   <div class="image"
     touch-events
+    direction="y"
     (pinch)="pinchEvent($event)"
     (pinchstart)="pinchStartEvent($event)"
     (pinchend)="pinchEndEvent($event)"
     (doubletap)="doubleTapEvent($event)"
-    (pan)="panEvent($event)"
+    (onpan)="panEvent($event)"
     [ngStyle]="containerStyle"
   >
     <img src="{{ src }}" alt=""

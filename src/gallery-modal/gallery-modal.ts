@@ -20,6 +20,16 @@ export class GalleryModal {
   private closeIcon: string = 'arrow-back';
   private parentSubject: Subject<any> = new Subject();
 
+  private width: number = 0;
+  private height: number = 0;
+
+  private slidesStyle: any = {
+    visibility: 'hidden',
+  };
+  private modalStyle: any = {
+    backgroundColor: 'rgba(0, 0, 0, 1)',
+  };
+
   constructor(private viewCtrl: ViewController, params: NavParams, private element: ElementRef, private platform: Platform) {
     this.photos = params.get('photos') || [];
     this.closeIcon = params.get('closeIcon') || 'arrow-back';
@@ -36,12 +46,12 @@ export class GalleryModal {
   private resize(event) {
     this.slider.update();
 
-    let width = this.element['nativeElement'].offsetWidth;
-    let height = this.element['nativeElement'].offsetHeight;
+    this.width = this.element.nativeElement.offsetWidth;
+    this.height = this.element.nativeElement.offsetHeight;
 
     this.parentSubject.next({
-      width: width,
-      height: height,
+      width: this.width,
+      height: this.height,
     });
   }
 
@@ -58,6 +68,7 @@ export class GalleryModal {
   private ionViewDidEnter() {
     this.resize(false);
     this.sliderLoaded = true;
+    this.slidesStyle.visibility = 'visible';
   }
 
   /**
@@ -82,5 +93,37 @@ export class GalleryModal {
       this.slider.slideTo(this.currentSlide, 0, false);
       this.sliderDisabled = false;
     }
+  }
+
+  /**
+   * Called when the user pans up/down
+   *
+   * @param  {Hammer.Event} event
+   */
+  private panUpDownEvent(event) {
+    let ratio = (event.distance / (this.height / 2));
+    if (ratio > 1) {
+      ratio = 1;
+    } else if (ratio < 0) {
+      ratio = 0;
+    }
+    const scale = 1 - (ratio * 0.2);
+    const opacity = 1 - (ratio * 0.2);
+    const backgroundOpacity = 1 - (ratio * 0.8);
+
+    this.slidesStyle.transform = `translate(0, ${event.deltaY}px) scale(${scale})`;
+    this.slidesStyle.opacity = opacity;
+    this.modalStyle.backgroundColor = `rgba(0, 0, 0, ${backgroundOpacity})`;
+  }
+
+  /**
+   * Called when the user stopped panning up/down
+   *
+   * @param  {Hammer.Event} event
+   */
+  private panEndEvent(event) {
+    this.slidesStyle.transform = 'none';
+    this.slidesStyle.opacity = 1;
+    this.modalStyle.backgroundColor = 'rgba(0, 0, 0, 1)';
   }
 }
