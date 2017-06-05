@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ViewController, NavParams, Slides, Content, Platform } from 'ionic-angular';
 import { Photo } from '../interfaces/photo-interface';
 import { Subject } from 'rxjs/Subject';
