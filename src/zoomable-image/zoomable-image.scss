@@ -15,8 +15,6 @@ zoomable-image {
 
     .image {
       display: inline-block;
-      vertical-align: top;
-      text-align: left;
 
       min-width: 100%;
       min-height: 100%;
@@ -27,11 +25,14 @@ zoomable-image {
       background-position: center center;
       background-size: contain;
 
+      text-align: left;
+      vertical-align: top;
+
       img {
-        pointer-events: none;
-        max-width: none;
         min-width: none;
+        max-width: none;
         transform-origin: left top;
+        pointer-events: none;
       }
     }
   }
