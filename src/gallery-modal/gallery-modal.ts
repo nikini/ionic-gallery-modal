@@ -4,9 +4,8 @@ import { Photo } from '../interfaces/photo-interface';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   selector: 'gallery-modal',
-  templateUrl: 'gallery-modal.html',
+  templateUrl: './gallery-modal.html',
   styleUrls: ['./gallery-modal.scss'],
 })
 export class GalleryModal {

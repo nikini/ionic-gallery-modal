@@ -1,20 +1,17 @@
 import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ViewEncapsulation, ElementRef } from '@angular/core';
-import { ViewController, Gesture, Scroll } from 'ionic-angular';
+import { ViewController, Scroll } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   selector: 'zoomable-image',
-  templateUrl: 'zoomable-image.html',
+  templateUrl: './zoomable-image.html',
   styleUrls: ['./zoomable-image.scss'],
 })
 export class ZoomableImage implements OnInit, OnDestroy {
-  @ViewChild('image') image;
-  @ViewChild('container') container;
   @ViewChild('ionScrollContainer', { read: ElementRef }) ionScrollContainer: ElementRef;
 
   @Input() src: string;
-  @Input() parentSubject:Subject<any>;
+  @Input() parentSubject: Subject<any>;
 
   @Output() disableScroll = new EventEmitter();
   @Output() enableScroll = new EventEmitter();
@@ -22,7 +19,6 @@ export class ZoomableImage implements OnInit, OnDestroy {
   private scrollableElement: any;
   private scrollListener: any;
 
-  private gesture: Gesture;
   private scale: number = 1;
   private scaleStart: number = 1;
 
@@ -60,6 +56,10 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
   private imageElement: any;
 
+  private containerStyle: any = {};
+  private imageStyle: any = {};
+  private resizeSubscription: any;
+
   constructor() {
   }
 
@@ -71,7 +71,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.attachEvents();
 
     // Listen to parent resize
-    this.parentSubject.subscribe(event => {
+    this.resizeSubscription = this.parentSubject.subscribe(event => {
       this.resize(event);
     });
 
@@ -81,21 +81,13 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.scrollableElement.removeEventListener('scroll', this.scrollListener);
+    this.resizeSubscription.unsubscribe();
   }
 
   /**
    * Attach the events to the items
    */
   private attachEvents() {
-    // Gesture events
-    this.gesture = new Gesture(this.container.nativeElement);
-    this.gesture.listen();
-    this.gesture.on('doubletap', e => this.doubleTapEvent(e));
-    this.gesture.on('pinch', e => this.pinchEvent(e));
-    this.gesture.on('pinchstart', e => this.pinchStartEvent(e));
-    this.gesture.on('pinchend', e => this.pinchEndEvent(e));
-    this.gesture.on('pan', e => this.panEvent(e));
-
     // Scroll event
     this.scrollListener = this.scrollEvent.bind(this);
     this.scrollableElement.addEventListener('scroll', this.scrollListener);
@@ -152,9 +144,9 @@ export class ZoomableImage implements OnInit, OnDestroy {
       this.imageWidth = width / height * this.dimensions.height;
     }
 
-    this.maxScale = Math.max(width / this.imageWidth - this.maxScaleBounce, 1.5);
-    this.image.nativeElement.style.width = `${this.imageWidth}px`;
-    this.image.nativeElement.style.height = `${this.imageHeight}px`;
+    this.maxScale = Math.max(width / this.imageWidth - this.maxScaleBounce, 1);
+    this.imageStyle.width = `${this.imageWidth}px`;
+    this.imageStyle.height = `${this.imageHeight}px`;
 
     this.displayScale();
   }
@@ -162,7 +154,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   /**
    * While the user is pinching
    *
-   * @param  {Event} event
+   * @param  {Hammer.Event} event
    */
   private pinchEvent(event) {
     let scale = this.scaleStart * event.scale;
@@ -182,7 +174,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   /**
    * When the user starts pinching
    *
-   * @param  {Event} event
+   * @param  {Hammer.Event} event
    */
   private pinchStartEvent(event) {
     this.scaleStart = this.scale;
@@ -192,7 +184,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   /**
    * When the user stops pinching
    *
-   * @param  {Event} event
+   * @param  {Hammer.Event} event
    */
   private pinchEndEvent(event) {
     this.checkScroll();
@@ -207,7 +199,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   /**
    * When the user double taps on the photo
    *
-   * @param  {Event} event
+   * @param  {Hammer.Event} event
    */
   private doubleTapEvent(event) {
     this.setCenter(event);
@@ -220,6 +212,11 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.animateScale(scale);
   }
 
+  /**
+   * Called when the user is panning
+   *
+   * @param  {Hammer.Event} event
+   */
   private panEvent(event) {
     // calculate center x,y since pan started
     const x = Math.max(Math.floor(this.panCenterStart.x + event.deltaX), 0);
@@ -249,7 +246,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
   /**
    * Set the startup center calculated on the image (along with the ratio)
    *
-   * @param  {Event} event
+   * @param  {Hammer.Event} event
    */
   private setCenter(event) {
     const realImageWidth = this.imageWidth * this.scale;
@@ -265,14 +262,6 @@ export class ZoomableImage implements OnInit, OnDestroy {
   }
 
   /**
-   * Set the scroll of the ion-scroll
-   */
-  private setScroll() {
-    this.scrollableElement.scrollLeft = this.scroll.x;
-    this.scrollableElement.scrollTop = this.scroll.y;
-  }
-
-  /**
    * Calculate the position and set the proper scale to the element and the
    * container
    */
@@ -283,13 +272,16 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.position.x = Math.max((this.dimensions.width - realImageWidth) / (2 * this.scale), 0);
     this.position.y = Math.max((this.dimensions.height - realImageHeight) / (2 * this.scale), 0);
 
-    this.image.nativeElement.style.transform = `scale(${this.scale}) translate(${this.position.x}px, ${this.position.y}px)`;
-    this.container.nativeElement.style.width = `${realImageWidth}px`;
-    this.container.nativeElement.style.height = `${realImageHeight}px`;
+    this.imageStyle.transform = `scale(${this.scale}) translate(${this.position.x}px, ${this.position.y}px)`;
+    this.containerStyle.width = `${realImageWidth}px`;
+    this.containerStyle.height = `${realImageHeight}px`;
 
     this.scroll.x = this.centerRatio.x * realImageWidth - this.centerStart.x;
     this.scroll.y = this.centerRatio.y * realImageWidth - this.centerStart.y;
-    this.setScroll();
+
+    // Set scroll of the ion scroll
+    this.scrollableElement.scrollLeft = this.scroll.x;
+    this.scrollableElement.scrollTop = this.scroll.y;
   }
 
   /**

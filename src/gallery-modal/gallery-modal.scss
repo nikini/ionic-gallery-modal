@@ -1,36 +1,38 @@
-.gallery-modal {
-  position: relative;
-  background: black;
+:host {
+  .gallery-modal {
+    position: relative;
+    background: black;
 
-  .close-button {
-    position: absolute;
-    top: 10px;
-    left: 5px;
-    background: none;
-    z-index: 10;
+    .close-button {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      background: none;
+      z-index: 10;
 
-    &.button-ios {
-      top: 20px;
+      &.button-ios {
+        top: 20px;
+      }
     }
-  }
 
-  .slider {
-    .slide-zoom {
+    .slider {
+      /deep/ .slide-zoom {
+        height: 100%;
+      }
+    }
+
+    .image-on-top {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
+
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      z-index: 10;
     }
-  }
-
-  .image-on-top {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    z-index: 10;
   }
 }

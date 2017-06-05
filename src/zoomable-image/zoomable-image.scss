@@ -1,4 +1,4 @@
-zoomable-image {
+:host {
   width: 100%;
   height: 100%;
 
@@ -8,7 +8,7 @@ zoomable-image {
     text-align: left;
     white-space: nowrap;
 
-    .scroll-zoom-wrapper {
+    /deep/ .scroll-zoom-wrapper {
       width: 100%;
       height: 100%;
     }
@@ -29,7 +29,7 @@ zoomable-image {
       vertical-align: top;
 
       img {
-        min-width: none;
+        min-width: 0;
         max-width: none;
         transform-origin: left top;
         pointer-events: none;
