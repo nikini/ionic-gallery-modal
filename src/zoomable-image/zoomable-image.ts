@@ -15,6 +15,7 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
   @Output() disableScroll = new EventEmitter();
   @Output() enableScroll = new EventEmitter();
+  @Output() zoomChange = new EventEmitter();
 
   private scrollableElement: any;
   private scrollListener: any;
@@ -168,6 +169,10 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.scale = scale;
     this.displayScale();
 
+    this.zoomChange.emit({
+      scale: this.scale,
+    });
+
     event.preventDefault();
   }
 
@@ -191,8 +196,20 @@ export class ZoomableImage implements OnInit, OnDestroy {
 
     if (this.scale > this.maxScale) {
       this.animateScale(this.maxScale);
+
+      this.zoomChange.emit({
+        scale: this.maxScale,
+      });
     } else if (this.scale < this.minScale) {
       this.animateScale(this.minScale);
+
+      this.zoomChange.emit({
+        scale: this.minScale,
+      });
+    } else {
+      this.zoomChange.emit({
+        scale: this.scale,
+      });
     }
   }
 
@@ -209,6 +226,10 @@ export class ZoomableImage implements OnInit, OnDestroy {
       scale = this.maxScale;
     }
 
+    this.zoomChange.emit({
+      scale: scale,
+    });
+
     this.animateScale(scale);
   }
 
@@ -218,8 +239,6 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * @param  {Hammer.Event} event
    */
   private panEvent(event) {
-    console.log('panning');
-
     // calculate center x,y since pan started
     const x = Math.max(Math.floor(this.panCenterStart.x + event.deltaX), 0);
     const y = Math.max(Math.floor(this.panCenterStart.y + event.deltaY), 0);

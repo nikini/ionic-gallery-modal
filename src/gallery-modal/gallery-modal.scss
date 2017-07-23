@@ -1,12 +1,14 @@
 :host {
   .gallery-modal {
     position: relative;
+    overflow: hidden;
 
     .close-button {
       position: absolute;
       top: 10px;
       left: 5px;
       background: none;
+      box-shadow: none;
       z-index: 10;
 
       &.button-ios {
@@ -16,7 +18,21 @@
 
     .slider {
       /deep/ .slide-zoom {
+        position: relative;
         height: 100%;
+      }
+
+      .gallery-item-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: white;
+        font-size: 14px;
+        line-height: 18px;
+        z-index: 1;
       }
     }
 

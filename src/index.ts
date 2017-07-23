@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { IonicModule } from 'ionic-angular';
 
 import { ZoomableImage } from './zoomable-image/zoomable-image';
 import { GalleryModal } from './gallery-modal/gallery-modal';
 
 import { TouchEventsDirective } from './directives/touch-events';
+
+import { GalleryModalHammerConfig } from './overrides/gallery-modal-hammer-config';
 
 @NgModule({
   imports: [
@@ -28,4 +31,4 @@ import { TouchEventsDirective } from './directives/touch-events';
   ],
 })
 export class GalleryModalModule {}
-export { ZoomableImage, GalleryModal }
+export { ZoomableImage, GalleryModal, GalleryModalHammerConfig }

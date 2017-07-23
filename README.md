@@ -27,27 +27,30 @@ npm install ionic-gallery-modal --save
 and then, within your application module 
 
 ```
-import { GalleryModal } from 'ionic-gallery-modal';
-import { ZoomableImage } from 'ionic-gallery-modal';
+import { GalleryModalModule, GalleryModalHammerConfig } from 'ionic-gallery-modal';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 ```
 
-and add it to your declarations
+and add the `GalleryModalModule` to your imports
 
 ```
-declarations: [
+imports: [
   //...
-  GalleryModal,
-  ZoomableImage,
+  GalleryModalModule,
   //...
 ],
 ```
 
-and to your entryComponents
+and to your providers
 
 ```
-entryComponents: [
+providers: [
   //...
-  GalleryModal,
+  {
+    provide: HAMMER_GESTURE_CONFIG,
+    useClass: GalleryModalHammerConfig,
+  },
+  //...
 ],
 ```
 
@@ -74,7 +77,10 @@ The possible options for it are:
 
 ```
 {
-  photos: Array[{ url: string }],
+  photos: Array[{ 
+    url: string, 
+    type: string,
+  }],
   closeIcon: string,
   initialSlide: number,
 }
@@ -84,6 +90,11 @@ The possible options for it are:
 Let us know or submit a PR! And, please, don't hesitate to contribute. :heart:
 
 ## Changelog
+
+#### v0.2.0
+ * Added the GalleryModalModule
+ * Made it possible to close the modal by swiping down
+ * Gallery items can now have title (as a description)
 
 #### v0.1.0
  * Changed to work with Ionic 3.2

@@ -17,7 +17,8 @@ export class TouchEventsDirective implements OnInit, OnDestroy {
   @Output() onpan = new EventEmitter();
   @Output() panup = new EventEmitter();
   @Output() pandown = new EventEmitter();
-  @Output() panstart = new EventEmitter();
+  @Output() panleft = new EventEmitter();
+  @Output() panright = new EventEmitter();
   @Output() panend = new EventEmitter();
   @Output() pancancel = new EventEmitter();
   @Output() doubletap = new EventEmitter();
@@ -28,6 +29,7 @@ export class TouchEventsDirective implements OnInit, OnDestroy {
   ngOnInit() {
     this.gestureListener = new Gesture(this.el.nativeElement, {
       domEvents: false,
+      enable: true,
       direction: this.direction,
       threshold: this.threshold,
     });
@@ -50,8 +52,11 @@ export class TouchEventsDirective implements OnInit, OnDestroy {
     this.gestureListener.on('pandown', (event) => {
       this.pandown.emit(event);
     });
-    this.gestureListener.on('panstart', (event) => {
-      this.panstart.emit(event);
+    this.gestureListener.on('panleft', (event) => {
+      this.panleft.emit(event);
+    });
+    this.gestureListener.on('panright', (event) => {
+      this.panright.emit(event);
     });
     this.gestureListener.on('panend', (event) => {
       this.panend.emit(event);
