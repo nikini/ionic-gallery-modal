@@ -5,7 +5,7 @@
 # Ionic Gallery Modal
 
 It consists of a modal that will help you make gallery preview modal.
-Last tested with Ionic 3.3.0
+Last tested with Ionic 3.5.0
 
 ## Demo
 
@@ -91,7 +91,11 @@ Let us know or submit a PR! And, please, don't hesitate to contribute. :heart:
 
 ## Changelog
 
+#### v0.2.1
+ * Fixed a bug which caused the production build to not work
+
 #### v0.2.0
+ * Changed to work with Ionic 3.5
  * Added the GalleryModalModule
  * Made it possible to close the modal by swiping down
  * Gallery items can now have title (as a description)
