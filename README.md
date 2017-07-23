@@ -27,7 +27,7 @@ npm install ionic-gallery-modal --save
 and then, within your application module 
 
 ```
-import { GalleryModalModule, GalleryModalHammerConfig } from 'ionic-gallery-modal';
+import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 ```
 
@@ -36,7 +36,7 @@ and add the `GalleryModalModule` to your imports
 ```
 imports: [
   //...
-  GalleryModalModule,
+  ionicGalleryModal.GalleryModalModule,
   //...
 ],
 ```
@@ -48,7 +48,7 @@ providers: [
   //...
   {
     provide: HAMMER_GESTURE_CONFIG,
-    useClass: GalleryModalHammerConfig,
+    useClass: ionicGalleryModal.GalleryModalHammerConfig,
   },
   //...
 ],
