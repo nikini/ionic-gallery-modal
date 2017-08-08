@@ -1,4 +1,6 @@
 :host {
+  display: block;
+  position: relative;
   width: 100%;
   height: 100%;
 
@@ -15,6 +17,7 @@
 
     .image {
       display: inline-block;
+      position: relative;
 
       min-width: 100%;
       min-height: 100%;
@@ -28,12 +31,24 @@
       text-align: left;
       vertical-align: top;
 
-      img {
-        min-width: 0;
-        max-width: none;
+      fitted-image {
         transform-origin: left top;
         pointer-events: none;
       }
     }
+  }
+
+  .fitted-image-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    z-index: 1;
   }
 }

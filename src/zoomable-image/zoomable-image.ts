@@ -10,8 +10,10 @@ import { Subject } from 'rxjs/Subject';
 export class ZoomableImage implements OnInit, OnDestroy {
   @ViewChild('ionScrollContainer', { read: ElementRef }) ionScrollContainer: ElementRef;
 
-  @Input() src: string;
-  @Input() parentSubject: Subject<any>;
+  @Input() photo: any;
+  @Input() resizeTriggerer: Subject<any>;
+  @Input() wrapperWidth: number;
+  @Input() wrapperHeight: number;
 
   @Output() disableScroll = new EventEmitter();
   @Output() enableScroll = new EventEmitter();
@@ -31,6 +33,11 @@ export class ZoomableImage implements OnInit, OnDestroy {
   private imageWidth: number = 0;
   private imageHeight: number = 0;
 
+  private originalSize: any = {
+    width: 0,
+    height: 0,
+  };
+
   private position: any = {
     x: 0,
     y: 0,
@@ -47,15 +54,9 @@ export class ZoomableImage implements OnInit, OnDestroy {
     x: 0,
     y: 0,
   };
-  private dimensions: any = {
-    width: 0,
-    height: 0,
-  };
   private panCenterStart = {
     x: 0, y: 0,
   };
-
-  private imageElement: any;
 
   private containerStyle: any = {};
   private imageStyle: any = {};
@@ -72,12 +73,9 @@ export class ZoomableImage implements OnInit, OnDestroy {
     this.attachEvents();
 
     // Listen to parent resize
-    this.resizeSubscription = this.parentSubject.subscribe(event => {
+    this.resizeSubscription = this.resizeTriggerer.subscribe(event => {
       this.resize(event);
     });
-
-    // Resize the zoomable image
-    this.resize(false);
   }
 
   public ngOnDestroy() {
@@ -98,34 +96,21 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * Called every time the window gets resized
    */
   public resize(event) {
-    // Set the wrapper dimensions first
-    this.setWrapperDimensions(event.width, event.height);
-
     // Get the image dimensions
-    this.setImageDimensions();
+    this.saveImageDimensions();
   }
 
   /**
-   * Set the wrapper dimensions
+   * Called when the image has dimensions
    *
-   * @param  {number} width
-   * @param  {number} height
+   * @param  {Object} dimensions
    */
-  private setWrapperDimensions(width:number, height:number) {
-    this.dimensions.width = width || window.innerWidth;
-    this.dimensions.height = height || window.innerHeight;
-  }
+  handleImageResized(dimensions) {
+    this.imageWidth = dimensions.width;
+    this.imageHeight = dimensions.height;
 
-  /**
-   * Get the real image dimensions and other useful stuff
-   */
-  private setImageDimensions() {
-    if (!this.imageElement) {
-      this.imageElement = new Image();
-      this.imageElement.src = this.src;
-      this.imageElement.onload = this.saveImageDimensions.bind(this);
-      return;
-    }
+    this.originalSize.width = dimensions.originalWidth;
+    this.originalSize.height = dimensions.originalHeight;
 
     this.saveImageDimensions();
   }
@@ -134,20 +119,10 @@ export class ZoomableImage implements OnInit, OnDestroy {
    * Save the image dimensions (when it has the image)
    */
   private saveImageDimensions() {
-    const width = this.imageElement['width'];
-    const height = this.imageElement['height'];
-
-    if (width / height > this.dimensions.width / this.dimensions.height) {
-      this.imageWidth = this.dimensions.width;
-      this.imageHeight = height / width * this.dimensions.width;
-    } else {
-      this.imageHeight = this.dimensions.height;
-      this.imageWidth = width / height * this.dimensions.height;
-    }
+    const width = this.originalSize.width;
+    const height = this.originalSize.height;
 
     this.maxScale = Math.max(width / this.imageWidth - this.maxScaleBounce, 1);
-    this.imageStyle.width = `${this.imageWidth}px`;
-    this.imageStyle.height = `${this.imageHeight}px`;
 
     this.displayScale();
   }
@@ -290,8 +265,8 @@ export class ZoomableImage implements OnInit, OnDestroy {
     const realImageWidth = this.imageWidth * this.scale;
     const realImageHeight = this.imageHeight * this.scale;
 
-    this.position.x = Math.max((this.dimensions.width - realImageWidth) / (2 * this.scale), 0);
-    this.position.y = Math.max((this.dimensions.height - realImageHeight) / (2 * this.scale), 0);
+    this.position.x = Math.max((this.wrapperWidth - realImageWidth) / (2 * this.scale), 0);
+    this.position.y = Math.max((this.wrapperHeight - realImageHeight) / (2 * this.scale), 0);
 
     this.imageStyle.transform = `scale(${this.scale}) translate(${this.position.x}px, ${this.position.y}px)`;
     this.containerStyle.width = `${realImageWidth}px`;
