@@ -1,5 +1,6 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { ViewController, NavParams, Slides, Content, Platform } from 'ionic-angular';
+import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { ViewController, NavParams, Slides, Platform } from 'ionic-angular';
 import { Photo } from '../interfaces/photo-interface';
 import { Subject } from 'rxjs/Subject';
 
@@ -8,9 +9,10 @@ import { Subject } from 'rxjs/Subject';
   templateUrl: './gallery-modal.html',
   styleUrls: ['./gallery-modal.scss'],
 })
-export class GalleryModal {
+export class GalleryModal implements OnInit {
   @ViewChild('slider') slider: Slides;
-  @ViewChild('content') content: Content;
+
+  private initialImage: any;
 
   public photos: Photo[];
   private sliderDisabled: boolean = false;
@@ -18,7 +20,7 @@ export class GalleryModal {
   private currentSlide: number = 0;
   private sliderLoaded: boolean = false;
   private closeIcon: string = 'arrow-back';
-  private parentSubject: Subject<any> = new Subject();
+  private resizeTriggerer: Subject<any> = new Subject();
   private slidesDragging: boolean = false;
   private panUpDownRatio: number = 0;
   private panUpDownDeltaY: number = 0;
@@ -37,10 +39,17 @@ export class GalleryModal {
   private transitionDuration: string = '200ms';
   private transitionTimingFunction: string = 'cubic-bezier(0.33, 0.66, 0.66, 1)';
 
-  constructor(private viewCtrl: ViewController, params: NavParams, private element: ElementRef, private platform: Platform) {
+  constructor(private viewCtrl: ViewController, params: NavParams, private element: ElementRef, private platform: Platform, private domSanitizer: DomSanitizer) {
     this.photos = params.get('photos') || [];
     this.closeIcon = params.get('closeIcon') || 'arrow-back';
     this.initialSlide = params.get('initialSlide') || 0;
+
+    this.initialImage = this.photos[this.initialSlide] || {};
+  }
+
+  public ngOnInit() {
+    // call resize on init
+    this.resize({});
   }
 
   /**
@@ -51,12 +60,13 @@ export class GalleryModal {
   }
 
   private resize(event) {
-    this.slider.update();
+    if (this.slider)
+      this.slider.update();
 
     this.width = this.element.nativeElement.offsetWidth;
     this.height = this.element.nativeElement.offsetHeight;
 
-    this.parentSubject.next({
+    this.resizeTriggerer.next({
       width: this.width,
       height: this.height,
     });
@@ -102,6 +112,11 @@ export class GalleryModal {
     }
   }
 
+  /**
+   * Called while dragging to close modal
+   *
+   * @param  {Event} event
+   */
   private slidesDrag(event) {
     this.slidesDragging = true;
   }

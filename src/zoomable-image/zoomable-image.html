@@ -9,8 +9,18 @@
     (onpan)="panEvent($event)"
     [ngStyle]="containerStyle"
   >
-    <img src="{{ src }}" alt=""
+    <fitted-image
+      [photo]="photo"
       [ngStyle]="imageStyle"
-    />
+      [resizeTriggerer]="resizeTriggerer"
+      [wrapperWidth]="wrapperWidth"
+      [wrapperHeight]="wrapperHeight"
+      (onImageResized)="handleImageResized($event)"
+    ></fitted-image>
   </div>
 </ion-scroll>
+
+<div
+  class="fitted-image-title"
+  *ngIf="photo.title"
+>{{ photo.title }}</div>

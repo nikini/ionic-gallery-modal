@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 
+import { FittedImage } from './fitted-image/fitted-image';
 import { ZoomableImage } from './zoomable-image/zoomable-image';
 import { GalleryModal } from './gallery-modal/gallery-modal';
 
@@ -13,15 +14,18 @@ import { GalleryModalHammerConfig } from './overrides/gallery-modal-hammer-confi
   imports: [
     CommonModule,
     IonicModule.forRoot(TouchEventsDirective),
+    IonicModule.forRoot(FittedImage),
     IonicModule.forRoot(ZoomableImage),
     IonicModule.forRoot(GalleryModal),
   ],
   declarations: [
+    FittedImage,
     ZoomableImage,
     GalleryModal,
     TouchEventsDirective,
   ],
   exports: [
+    FittedImage,
     ZoomableImage,
     GalleryModal,
     TouchEventsDirective,
@@ -31,4 +35,4 @@ import { GalleryModalHammerConfig } from './overrides/gallery-modal-hammer-confi
   ],
 })
 export class GalleryModalModule {}
-export { ZoomableImage, GalleryModal, GalleryModalHammerConfig, TouchEventsDirective }
+export { FittedImage, ZoomableImage, GalleryModal, GalleryModalHammerConfig, TouchEventsDirective }
