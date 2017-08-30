@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from 'ionic-angular';
+import { IonicPageModule } from 'ionic-angular';
 
 import { FittedImage } from './fitted-image/fitted-image';
 import { ZoomableImage } from './zoomable-image/zoomable-image';
@@ -13,10 +13,10 @@ import { GalleryModalHammerConfig } from './overrides/gallery-modal-hammer-confi
 @NgModule({
   imports: [
     CommonModule,
-    IonicModule.forRoot(TouchEventsDirective),
-    IonicModule.forRoot(FittedImage),
-    IonicModule.forRoot(ZoomableImage),
-    IonicModule.forRoot(GalleryModal),
+    IonicPageModule.forChild(TouchEventsDirective),
+    IonicPageModule.forChild(FittedImage),
+    IonicPageModule.forChild(ZoomableImage),
+    IonicPageModule.forChild(GalleryModal),
   ],
   declarations: [
     FittedImage,
