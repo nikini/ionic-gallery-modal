@@ -127,6 +127,8 @@ export class GalleryModal implements OnInit {
    * @param  {Hammer.Event} event
    */
   private panUpDownEvent(event) {
+    event.preventDefault();
+
     if (this.slidesDragging || this.sliderDisabled) {
       return;
     }

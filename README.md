@@ -5,7 +5,7 @@
 # Ionic Gallery Modal
 
 It consists of a modal that will help you make gallery preview modal.
-Last tested with Ionic 3.6.0
+Last tested with Ionic 3.13.0
 
 ## Demo
 
