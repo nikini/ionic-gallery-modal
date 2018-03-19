@@ -1,3 +1,7 @@
+# This project is no longer being maintained!
+
+If you need a nice, professional library, please use [photoswipe.js](https://github.com/dimsemenov/photoswipe)
+
 [![npm](https://img.shields.io/npm/l/express.svg)](https://www.npmjs.com/package/ionic-gallery-modal)
 [![NPM Version](http://img.shields.io/npm/v/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
 [![NPM Downloads](https://img.shields.io/npm/dm/ionic-gallery-modal.svg?style=flat)](https://www.npmjs.org/package/ionic-gallery-modal)
